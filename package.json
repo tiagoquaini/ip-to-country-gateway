@@ -1,0 +1,14 @@
+{
+  "name": "ip-to-country-gateway",
+  "version": "1.0.0",
+  "description": "Simple API gateway which receives an IP address and responds with the country name associated to it.",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tiagoquaini@gmail.com",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
