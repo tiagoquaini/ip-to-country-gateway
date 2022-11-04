@@ -9,6 +9,11 @@ class IPAPIConnector extends BaseLookupConnector {
   buildUrl(ipAddress) {
     return `${this.baseUrl}/${ipAddress}?fields=country`;
   }
+
+  async lookupIp(ipAddress) {
+    const countryData = await super.lookupIp(ipAddress);
+    return countryData?.country;
+  }
 }
 
 module.exports = new IPAPIConnector();
