@@ -1,26 +1,8 @@
 const { describe, expect, test } = require('@jest/globals');
 const IPAPIConnector = require('../../src/connectors/IPAPIConnector');
-const fetch = require('node-fetch');
 const HTTPResponseError = require('../../src/utils/HTTPResponseError');
-const { Response, Headers } = jest.requireActual('node-fetch');
 
-jest.mock('node-fetch');
-
-const headers = new Headers({
-  'Content-Type': 'application/json',
-  Accept: '*/*'
-});
-
-const ResponseSuccess = {
-  status: 200,
-  statusText: 'success',
-  headers: headers
-};
-const ResponseError = {
-  status: 400,
-  statusText: 'error',
-  headers: headers
-};
+const nock = require('nock');
 
 describe('IPStackConnector', () => {
   let ipAddr, baseUrl, countryData;
@@ -28,24 +10,24 @@ describe('IPStackConnector', () => {
   beforeAll(() => {
     ipAddr = "8.8.8.8";
     baseUrl = "http://ip-api.com/json";
-    countryData = { data: { "country_name": "United States" } };
+    countryData = { "country": "United States" };
   });
 
   test('Should successfully call API URL', async () => {
-    const apiResponse = new Response(JSON.stringify(countryData), ResponseSuccess);
-    fetch.mockResolvedValueOnce(Promise.resolve(apiResponse));
+    nock(baseUrl)
+      .get(`/${ipAddr}?fields=country`)
+      .reply(200, countryData);
     const data = await IPAPIConnector.lookupIp(ipAddr);
-    expect(data).toEqual(countryData);
-    expect(fetch).toBeCalledWith(`${baseUrl}/${ipAddr}?fields=country`);
+    expect(data).toEqual(countryData.country);
   });
 
   test('Should throw HTTPResponseError when API call fails', async () => {
-    const apiResponse = new Response(null, ResponseError);
-    fetch.mockResolvedValueOnce(Promise.resolve(apiResponse));
+    nock(baseUrl)
+      .get(`/${ipAddr}?fields=country`)
+      .reply(500);
     try {
       await IPAPIConnector.lookupIp(ipAddr);
     } catch (err) {
-      expect(fetch).toBeCalledWith(`${baseUrl}/${ipAddr}?fields=country`);
       expect(err).toBeInstanceOf(HTTPResponseError);
     }
   });

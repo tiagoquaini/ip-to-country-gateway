@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "jest": "^29.2.2",
-    "jest-when": "^3.5.2"
+    "jest-when": "^3.5.2",
+    "nock": "^13.2.9"
   }
 }
