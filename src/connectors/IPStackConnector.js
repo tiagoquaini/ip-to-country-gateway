@@ -1,5 +1,5 @@
 const BaseLookupConnector = require("./BaseLookupConnector");
-const BASE_URL = "https://api.ipstack.com";
+const BASE_URL = "http://api.ipstack.com";
 
 class IPStackConnector extends BaseLookupConnector {
   constructor() {

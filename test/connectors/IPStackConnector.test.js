@@ -8,7 +8,7 @@ describe('IPStackConnector', () => {
 
   beforeAll(() => {
     ipAddr = "8.8.8.8";
-    baseUrl = "https://api.ipstack.com";
+    baseUrl = "http://api.ipstack.com";
     apiKey = "API_KEY";
     process.env.IPSTACK_API_KEY = apiKey;
     countryData = { "country_name": "United States" } ;
