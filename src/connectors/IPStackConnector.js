@@ -1,5 +1,6 @@
 const BaseLookupConnector = require("./BaseLookupConnector");
 const BASE_URL = "http://api.ipstack.com";
+require("dotenv").config();
 
 class IPStackConnector extends BaseLookupConnector {
   constructor() {
