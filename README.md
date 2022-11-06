@@ -12,6 +12,6 @@ npm start
 ```
 
 The application exposes a `GET` endpoint, where the IP address is a part of the URL as:
-  **HTTP GET**
-  localhost:3000/api/v1/lookup/**:ip**/country
+
+**HTTP GET** localhost:3000/api/v1/lookup/**:ip**/country
 
