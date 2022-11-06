@@ -15,3 +15,5 @@ The application exposes a `GET` endpoint, where the IP address is a part of the 
 
 **HTTP GET** localhost:3000/api/v1/lookup/**:ip**/country
 
+## Tests
+The application's unit tests can be executed using `npm test`
