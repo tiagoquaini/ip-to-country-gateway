@@ -36,24 +36,22 @@ async function getCountryByIp(ip) {
 }
 
 async function queryCountryFromIpStack(ip) {
-  if (rateLimit.hasReachedLimit("IP_STACK")) {
+  if (await rateLimit.hasReachedLimit("IP_STACK")) {
     return null;
   }
   Logger.log(`Retrieving IP address '${ip}' from IP Stack`);
   const countryName = await ipStackConnector.lookupIp(ip);
   countriesCaching.storeCountry(countryName, ip);
-  rateLimit.logCall("IP_STACK");
   return countryName;
 }
 
 async function queryCountryFromIpApi(ip) {
-  if (rateLimit.hasReachedLimit("IP_API")) {
+  if (await rateLimit.hasReachedLimit("IP_API")) {
     return null;
   }
   Logger.log(`Retrieving IP address '${ip}' from IP API`);
   const countryName = await ipApiConnector.lookupIp(ip);
   countriesCaching.storeCountry(countryName, ip);
-  rateLimit.logCall("IP_API");
   return countryName;
 }
 

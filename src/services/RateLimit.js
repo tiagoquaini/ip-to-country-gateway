@@ -1,22 +1,38 @@
+const { RateLimiter } = require("limiter");
 require("dotenv").config();
 
-const callNumber = {
-  IP_STACK: 0,
-  IP_API: 0
+const ipStackDefinedLimit = parseInt(process.env.IP_STACK_RATE_LIMIT || 0);
+const ipStackLimiter = new RateLimiter({
+  tokensPerInterval: ipStackDefinedLimit,
+  interval: "hour",
+  fireImmediately: true
+});
+
+const ipApiDefinedLimit = parseInt(process.env.IP_API_RATE_LIMIT || 0);
+const ipApiLimiter = new RateLimiter({
+  tokensPerInterval: ipApiDefinedLimit,
+  interval: "hour",
+  fireImmediately: true
+});
+
+const services = {
+  IP_STACK: "IP_STACK",
+  IP_API: "IP_API"
 };
 
-function hasReachedLimit(service) {
-  const rateLimit = process.env[service + "_RATE_LIMIT"];
-  return callNumber[service] !== undefined && callNumber[service] >= parseInt(rateLimit || -1);
-}
+async function hasReachedLimit(service) {
+  let remainingCalls = 0;
 
-function logCall(service) {
-  if (callNumber[service] !== undefined) {
-    callNumber[service] = callNumber[service] + 1;
+  if (service === services.IP_STACK) {
+    remainingCalls = await ipStackLimiter.removeTokens(1);
   }
+  if (service === services.IP_API) {
+    remainingCalls = await ipApiLimiter.removeTokens(1);
+  }
+
+  return remainingCalls === -1; // limiter will be -1 when limit is reached
 }
 
 module.exports = {
-  hasReachedLimit,
-  logCall
+  hasReachedLimit
 };
