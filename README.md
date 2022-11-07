@@ -15,5 +15,15 @@ The application exposes a `GET` endpoint, where the IP address is a part of the 
 
 **HTTP GET** localhost:3000/api/v1/lookup/**:ip**/country
 
+### Rate Limit
+The application relies on two different environment variables to manage the rate limits for the external services used. These variables can be configured as:
+
+```sh
+IP_STACK_RATE_LIMIT=3
+IP_API_RATE_LIMIT=5
+```
+
+Where the above configuration would allow a maximum of 3 requests to the IP Stack service, and a maximum of 5 requests to the IP API service. 
+
 ## Tests
 The application's unit tests can be executed using `npm test`
